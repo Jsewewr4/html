@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráfico de Consumo de Agua</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            max-width: 600px;
+            margin: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="waterUsageChart"></canvas>
+    <script>
+        // Generar datos aleatorios para el consumo mensual
+        function generateMonthlyData(startDate) {
+            const months = [];
+            const data = [];
+            let currentDate = new Date(startDate);
+            
+            // Generar datos hasta agosto del mismo año
+            while (currentDate.getMonth() <= 7) {
+                const monthName = currentDate.toLocaleString('default', { month: 'short' }) + ' ' + currentDate.getFullYear();
+                months.push(monthName);
+                data.push(Math.floor(Math.random() * 100) + 1); // Consumo aleatorio entre 1 y 100 m³
+                currentDate.setMonth(currentDate.getMonth() + 1);
+            }
+            return { months, data };
+        }
+
+        const startDate = new Date();
+        const { months, data } = generateMonthlyData(startDate);
+
+        const ctx = document.getElementById('waterUsageChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Consumo de Agua (m³)',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
